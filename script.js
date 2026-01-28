@@ -1027,3 +1027,90 @@ function resetCalculator() {
 }
 
 >>>>>>> 659bb6d22047632148da256f36dac525c1ba6d24
+
+// ==================== Login Functionality ====================
+
+// Check if user is already logged in
+function checkLogin() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        showMainApp();
+    }
+}
+
+// Handle login form submission
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const loginError = document.getElementById('loginError');
+    
+    // Check credentials (admin/admin123)
+    if (username === 'admin' && password === 'admin123') {
+        // Successful login
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('username', username);
+        showMainApp();
+    } else {
+        // Failed login
+        loginError.style.display = 'block';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('loginUsername').focus();
+        
+        // Shake animation trigger
+        setTimeout(() => {
+            loginError.style.display = 'block';
+        }, 100);
+    }
+    
+    return false;
+}
+
+// Show main application and hide login
+function showMainApp() {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+}
+
+// Logout function (optional - can be called from anywhere)
+function logout() {
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('username');
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginUsername').value = '';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginError').style.display = 'none';
+}
+
+// Check login status when page loads
+window.addEventListener('load', checkLogin);
+
+// Enhanced Enter key handling for login inputs
+document.addEventListener('DOMContentLoaded', function() {
+    const loginUsername = document.getElementById('loginUsername');
+    const loginPassword = document.getElementById('loginPassword');
+    
+    if (loginUsername && loginPassword) {
+        // Add Enter key listener to username field
+        loginUsername.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                // If username is filled, move to password field
+                if (this.value) {
+                    loginPassword.focus();
+                }
+            }
+        });
+        
+        // Add Enter key listener to password field
+        loginPassword.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                // Submit the form
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    }
+});
