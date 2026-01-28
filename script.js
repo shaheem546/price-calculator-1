@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Store form data
 let formData = {
     productType: '',
