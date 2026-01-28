@@ -533,7 +533,7 @@ function handleLogin(event) {
     const loginError = document.getElementById('loginError');
     
     // Check credentials (admin/admin)
-    if (username === 'admin' && password === 'admin') {
+    if (username === 'admin' && password === 'admin123') {
         // Successful login
         sessionStorage.setItem('isLoggedIn', 'true');
         sessionStorage.setItem('username', username);
